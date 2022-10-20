@@ -29,7 +29,7 @@ if(file_exists($path .'/logpacker.ini')) {
 	if(isset($arr['max_file_size_MB']))   $max_file_size_MB   = $arr['max_file_size_MB'];
 	if(isset($arr['days_last_change']))   $days_last_change   = $arr['days_last_change'];
 	if(isset($arr['days_from_creation'])) $days_from_creation = $arr['days_from_creation'];
-	if(isset($arr['archive_extension']))  $days_from_creation = $arr['archive_extension'];
+	if(isset($arr['archive_extension']))  $archive_extension  = $arr['archive_extension'];
 }
 
 console('CONFIG', 'verde');
