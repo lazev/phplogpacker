@@ -1,4 +1,4 @@
-# phplogpacker
+# PHPLogPacker
 
 Compacta e arquiva arquivos depois que chegam a um tamanho definido.
 
