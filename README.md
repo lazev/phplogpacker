@@ -28,3 +28,17 @@ days_last_change   = 0  ; A FAZER - arquivos que foram modificados a este númer
 days_from_creation = 0  ; A FAZER - arquivos que foram criados a este número de dias, entram no arquivamento
 archive_extension  = 7z ; extensão padrão do arquivo compactado, ela define o uso de 7Zip ou Zip.
 ```
+
+***Exemplo***
+
+Após rodar em uma pasta, o arquivo fica assim
+
+```
+error.log => error.log.1.7z
+error.log.1.7z => error.log.2.7z
+error.log.2.7z => error.log.3.7z
+error.log.3.7z => error.log.4.7z
+error.log.4.7z => error.log.5.7z
+error.log.5.7z => excluído
+```
+
