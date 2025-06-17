@@ -1,0 +1,16 @@
+{
+    "name": "lazev/phplogpacker",
+    "description": "A PHP tool for log packing and rotation",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vini Lazev",
+            "email": "166401+lazev@users.noreply.github.com"
+        }
+    ],
+    "bin": ["bin/logpacker.php"],
+    "require": {
+        "php": "^7.4 || ^8.0"
+    }
+}
