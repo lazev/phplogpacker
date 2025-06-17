@@ -1,17 +1,18 @@
+#!/usr/bin/env php
 <?php
 console('');
-console('°º¤ø,¸¸,ø¤º°`° LOG PACKER º¤ø,¸¸,ø¤º°`°º', 'azul', 'negrito');
+console('°º¤ø,¸¸,ø¤º°`° LOG PACKER º¤ø,¸¸,ø¤º°`°º', 'blue', 'bold');
 console('');
 
 if(!isset($argv[1])) {
-	console('Informe o caminho no segundo argumento.', 'amarelo', 'negrito');
+	console('Error: Path required. Usage: command <path>', 'yellow', 'bold');
 	die(PHP_EOL);
 }
 
 $path = $argv[1];
 
 if(!file_exists($path)) {
-	console($path .' não encontrado.', 'vermelho', 'negrito');
+	console($path .' not found.', 'red', 'bold');
 	die(PHP_EOL);
 }
 
@@ -32,7 +33,7 @@ if(file_exists($path .'/logpacker.ini')) {
 	if(isset($arr['archive_extension']))  $archive_extension  = $arr['archive_extension'];
 }
 
-console('CONFIG', 'verde');
+console('CONFIG', 'green');
 console('num_files_archived: '. $num_files_archived);
 console('max_file_size_MB:   '. $max_file_size_MB  );
 console('days_last_change:   '. $days_last_change  );
@@ -63,7 +64,7 @@ function rotate($path) {
 			$file = $path .'/'. $item;
 
 			if(is_dir($file)) {
-				console($file .'/', 'amarelo');
+				console($file .'/', 'yellow');
 				rotate($file);
 			}
 			else {
@@ -91,7 +92,7 @@ function rotateFile($file) {
 		$ii++;
 	} while(file_exists($newfile));
 
-	console('  '. basename($file) .' => '. basename($newfile) . $extfile, 'azul', 'negrito');
+	console('  '. basename($file) .' => '. basename($newfile) . $extfile, 'blue', 'bold');
 
 	if($extfile == '.7z') {
 		shell_exec("mv $file $newfile && 7za a $newfile.7z $newfile -mx9 -sdel");
@@ -115,10 +116,10 @@ function rotateOld($file) {
 		if(file_exists($path .'/'. $name .'.'. $ii . $extfile)) {
 
 			if($ii == $num_files_archived) {
-				console('  '. $name .'.'. $ii . $extfile .' => delete', 'ciano');
+				console('  '. $name .'.'. $ii . $extfile .' => delete', 'cyan');
 				unlink($path .'/'. $name .'.'. $ii . $extfile);
 			} else {
-				console('  '. $name .'.'. $ii . $extfile .' => '. $name .'.'. ($ii+1) . $extfile, 'ciano', 'negrito');
+				console('  '. $name .'.'. $ii . $extfile .' => '. $name .'.'. ($ii+1) . $extfile, 'cyan', 'bold');
 				rename(
 					$path .'/'. $name .'.'. $ii . $extfile,
 					$path .'/'. $name .'.'. ($ii+1) . $extfile
@@ -141,37 +142,37 @@ function rotateValid($file) {
 }
 
 
-function console($msg, $cor='branco', $estilo='normal', $fundo='preto', $enteres=1) {
+function console($msg, $color='white', $style='normal', $bg='black', $enters=1) {
 
-	$tabCor = [
-		'preto'    => 0,
-		'vermelho' => 1,
-		'verde'    => 2,
-		'amarelo'  => 3,
-		'azul'     => 4,
-		'rosa'     => 5,
-		'ciano'    => 6,
-		'branco'   => 7
+	$tabColor = [
+		'black'  => 0,
+		'red'    => 1,
+		'green'  => 2,
+		'yellow' => 3,
+		'blue'   => 4,
+		'pink'   => 5,
+		'cyan'   => 6,
+		'white'  => 7
 	];
 
-	$tabEstilo = [
-		'normal'     => 0,
-		'negrito'    => 1,
-		'opaco'      => 2,
-		'italico'    => 3,
-		'sublinhado' => 4,
-		'piscando'   => 5,
-		'reverso'    => 7,
-		'oculto'     => 8,
-		'riscado'    => 9
+	$tabStyle = [
+		'normal'        => 0,
+		'bold'          => 1,
+		'faint'         => 2,
+		'italic'        => 3,
+		'underline'     => 4,
+		'blink'         => 5,
+		'reverse'       => 7,
+		'hidden'        => 8,
+		'strikethrough' => 9
 	];
 
-	$cor = $tabCor[$cor] ?: 7;
-	$estilo = $tabEstilo[$estilo] ?: 0;
-	$fundo = $tabCor[$fundo] ?: 0;
+	$color = $tabColor[$color] ?: 7;
+	$style = $tabStyle[$style] ?: 0;
+	$bg    = $tabColor[$bg] ?: 0;
 
 	$enter = '';
-	for($ii=0; $ii<$enteres; $ii++) $enter .= PHP_EOL;
+	for($ii=0; $ii<$enters; $ii++) $enter .= PHP_EOL;
 
-	echo "\033[0$estilo;3$cor;4${fundo}m$msg\033[00m$enter";
+	echo "\033[0$style;3$color;4${bg}m$msg\033[00m$enter";
 }
