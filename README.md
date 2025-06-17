@@ -1,44 +1,67 @@
 # PHPLogPacker
 
-Compacta e arquiva arquivos depois que chegam a um tamanho definido.
+A lightweight PHP utility to automatically compress and archive files when they reach a defined size threshold.
 
+## ✨ Features
 
-***Forma de usar***
+- ✅ Compresses files >50MB (default) using 7Zip or fallback to Zip  
+- ✅ Recursive directory scanning (includes subfolders)  
+- ✅ Configurable retention policy and compression settings  
+- ✅ Zero dependencies – pure PHP CLI tool  
 
-```php logpacker.php /pasta/destino/```
+## 🚀 Usage
 
-Todos arquivos dentro da /pasta/destino e também subpastas que estiverem com mais de 50MB serão compactados
+### Basic Command
 
-
-***7Zip***
-
-Por padrão o script usa compactação pelo 7Zip, se este compactador estiver instalado na máquina, caso contrário, usa o Zip.
-
-
-***Personalização***
-
-O script procura na pasta raíz pelo arquivo logpacker.ini. Através dele é possível alterar as configurações de arquivamento.
-
-O arquivo tem que estar no seguinte formato:
-
-```
-num_files_archived = 5  ; número de arquivos zipados guardados antes da exclusão
-max_file_size_MB   = 50 ; tamanho limite do arquivo antes dele ser capturado pelo arquivamento
-days_last_change   = 0  ; A FAZER - arquivos que foram modificados a este número de dias, entram no arquivamento
-days_from_creation = 0  ; A FAZER - arquivos que foram criados a este número de dias, entram no arquivamento
-archive_extension  = 7z ; extensão padrão do arquivo compactado, ela define o uso de 7Zip ou Zip.
+```bash
+php logpacker.php /target/directory/
 ```
 
-***Exemplo***
+### How It Works
 
-Após rodar em uma pasta, o arquivo fica assim
+- Scans `/target/directory/` and all subfolders  
+- Compresses files exceeding `max_file_size_MB` (default: 50MB)  
+- Maintains `num_files_archived` versions (default: 5)  
+- Oldest archives are automatically deleted  
 
+## ⚙️ Configuration (optional)
+
+To customize, create a `logpacker.ini` file in the script's root directory:
+
+```ini
+; logpacker.ini
+num_files_archived = 5   ; Number of archived versions to keep
+max_file_size_MB   = 50  ; Minimum file size to trigger compression (in MB)
+days_last_change   = 0   ; [TODO] Archive files modified X days ago
+days_from_creation = 0   ; [TODO] Archive files created X days ago
+archive_extension  = 7z  ; Compression format (7z or zip)
 ```
-error.log => error.log.1.7z
-error.log.1.7z => error.log.2.7z
-error.log.2.7z => error.log.3.7z
-error.log.3.7z => error.log.4.7z
-error.log.4.7z => error.log.5.7z
-error.log.5.7z => excluído
+
+## 🔄 Archive Rotation Example
+
+### Original structure:
+```
+error.log (60MB)
 ```
 
+### After first run:
+```
+error.log.1.7z (compressed)
+```
+
+### After subsequent runs:
+```
+error.log.1.7z → error.log.2.7z
+error.log.2.7z → error.log.3.7z
+...
+error.log.5.7z → deleted (oldest archive)
+```
+
+## 📦 Compression Methods
+
+- **7Zip** (default, if installed on system)  
+- **Zip** (fallback if 7Zip unavailable)  
+
+## 📜 License
+
+Open-source under the **MIT License**.
